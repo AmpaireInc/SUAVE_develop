@@ -110,18 +110,28 @@ def plot_aircraft_velocities(results, line_color = 'bo-', save_figure = False, s
         density  = segment.conditions.freestream.density[:,0]
         EAS      = velocity * np.sqrt(density/1.225)
         mach     = segment.conditions.freestream.mach_number[:,0]
+        MSL_data = segment.analyses.atmosphere.compute_values(.0,.0)
+        alpha_sl = MSL_data.speed_of_sound[0]
+        pressure_sl = MSL_data.pressure[0]
+        CAS      = (alpha_sl*np.sqrt(5*((((.5*density*velocity**2)/pressure_sl)+1)**(2/7)-1)))
 
-        axes = plt.subplot(3,1,1)
+        axes = plt.subplot(4,1,1)
         axes.plot( time , velocity / Units.kts, line_color)
         axes.set_ylabel('velocity (kts)',axis_font)
         set_axes(axes)
 
-        axes = plt.subplot(3,1,2)
+        axes = plt.subplot(4,1,2)
         axes.plot( time , EAS / Units.kts, line_color) 
         axes.set_ylabel('Equivalent Airspeed',axis_font)
         set_axes(axes)    
         
-        axes = plt.subplot(3,1,3)
+        axes = plt.subplot(4,1,3)
+        axes.plot( time , CAS / Units.kts , line_color)
+        axes.set_xlabel('Time (min)',axis_font)
+        axes.set_ylabel('Calibrated Airspeed',axis_font)
+        set_axes(axes)  
+        
+        axes = plt.subplot(4,1,4)
         axes.plot( time , mach , line_color)
         axes.set_xlabel('Time (min)',axis_font)
         axes.set_ylabel('Mach',axis_font)
@@ -978,6 +988,94 @@ def plot_propeller_conditions(results, line_color = 'bo-', save_figure = False, 
         axes.plot(time, Cp, line_color )
         axes.set_xlabel('Time (mins)',axis_font)
         axes.set_ylabel('Power Coefficient',axis_font)
+        set_axes(axes)   
+        
+        axes = plt.subplot(2,3,6)
+        axes.plot(time, tm, line_color )
+        axes.set_xlabel('Time (mins)',axis_font)
+        axes.set_ylabel('Tip Mach',axis_font)
+        set_axes(axes)
+        
+    # Set limits
+    for i in range(1,7):
+        ax         = plt.subplot(2,3,i)
+        y_lo, y_hi = ax.get_ylim()
+        if y_lo>0: y_lo = 0
+        y_hi       = y_hi*1.1
+        ax.set_ylim(y_lo,y_hi)
+            
+        
+    
+    plt.tight_layout()    
+    if save_figure:
+        plt.savefig(save_filename + file_type)  
+            
+    return
+
+def plot_propulsion_conditions(results, line_color = 'bo-', save_figure = False, save_filename = "Propeller", file_type = ".png"):
+    """This plots the propeller performance
+
+    Assumptions:
+    None
+
+    Source:
+    None
+
+    Inputs:
+    results.segments.conditions. 
+        frames.inertial.time 
+        propulsion.rpm 
+        frames.body.thrust_force_vector 
+        propulsion.propeller_motor_torque          
+        propulsion.propeller_tip_mach 
+        
+    Outputs: 
+    Plots
+
+    Properties Used:
+    N/A	
+    """	 
+    
+    axis_font = {'size':'14'} 
+    fig = plt.figure(save_filename)
+    fig.set_size_inches(12, 10)  
+    
+    for segment in results.segments.values():  
+        time   = segment.conditions.frames.inertial.time[:,0] / Units.min
+        rpm    = segment.conditions.propulsion.propeller_rpm[:,0] 
+        thrust = np.linalg.norm(segment.conditions.frames.body.thrust_force_vector[:,:],axis=1) / Units.lbf
+        torque = segment.conditions.propulsion.propeller_torque[:,0] 
+        tm     = segment.conditions.propulsion.propeller_tip_mach[:,0]
+        #Cp     = segment.conditions.propulsion.propeller_power_coefficient[:,0]
+        eta    = segment.conditions.propulsion.throttle[:,0]
+        power = segment.conditions.propulsion.power[:,0] / Units.horsepower
+ 
+        axes = plt.subplot(2,3,1)
+        axes.plot(time, thrust, line_color)
+        axes.set_ylabel('Thrust (lbf)',axis_font)
+        set_axes(axes)
+
+        
+        axes = plt.subplot(2,3,2)
+        axes.plot(time, rpm, line_color)
+        axes.set_ylabel('RPM',axis_font)
+        set_axes(axes)
+        
+        axes = plt.subplot(2,3,3)
+        axes.plot(time, torque, line_color )
+        axes.set_xlabel('Time (mins)',axis_font)
+        axes.set_ylabel('Torque (N-m)',axis_font)
+        set_axes(axes)  
+        
+        axes = plt.subplot(2,3,4)
+        axes.plot( time , eta , line_color )
+        axes.set_ylabel('Throttle',axis_font)
+        set_axes(axes)	 
+        
+        axes = plt.subplot(2,3,5)
+        axes.plot(time, power, line_color )
+        axes.set_xlabel('Time (mins)',axis_font)
+        axes.set_ylabel('Power (HP)',axis_font)
         set_axes(axes)   
         
         axes = plt.subplot(2,3,6)
