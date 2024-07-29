@@ -69,6 +69,7 @@ class Vehicle(Data):
         self.reference_area         = 0.0
         self.passengers             = 0.0
         self.performance            = DataOrdered()
+        self.drag_polar             = Data()
 
     _component_root_map = None
 

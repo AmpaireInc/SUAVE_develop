@@ -51,21 +51,29 @@ def plot_altitude_sfc_weight(results, line_color = 'bo-', save_figure = False, s
         mass     = segment.conditions.weights.total_mass[:,0] / Units.lb
         altitude = segment.conditions.freestream.altitude[:,0] / Units.ft
         mdot     = segment.conditions.weights.vehicle_mass_rate[:,0]
-        thrust   =  segment.conditions.frames.body.thrust_force_vector[:,0]
-        sfc      = (mdot / Units.lb) / (thrust /Units.lbf) * Units.hr
+        thrust   = segment.conditions.frames.body.thrust_force_vector[:,0]
+        power    = segment.conditions.propulsion.power[:,0]
+        tsfc     = (mdot / Units.lb) / (thrust /Units.lbf) * Units.hr
+        psfc     = (mdot / Units.lb) / (power / Units.hp) * Units.hr
 
-        axes = plt.subplot(3,1,1)
+        axes = plt.subplot(4,1,1)
         axes.plot( time , altitude , line_color)
         axes.set_ylabel('Altitude (ft)',axis_font)
         set_axes(axes)
 
-        axes = plt.subplot(3,1,3)
-        axes.plot( time , sfc , line_color )
+        axes = plt.subplot(4,1,3)
+        axes.plot( time , tsfc , line_color )
         axes.set_xlabel('Time (min)',axis_font)
-        axes.set_ylabel('sfc (lb/lbf-hr)',axis_font)
+        axes.set_ylabel('tsfc (lb/lbf-hr)',axis_font)
         set_axes(axes)
 
-        axes = plt.subplot(3,1,2)
+        axes = plt.subplot(4,1,4)
+        axes.plot( time , psfc , line_color )
+        axes.set_xlabel('Time (min)',axis_font)
+        axes.set_ylabel('psfc (lb/HP-hr)',axis_font)
+        set_axes(axes)
+
+        axes = plt.subplot(4,1,2)
         axes.plot( time , mass , 'ro-' )
         axes.set_ylabel('Weight (lb)',axis_font)
         set_axes(axes)
