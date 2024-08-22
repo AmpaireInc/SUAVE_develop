@@ -327,7 +327,7 @@ def vehicle_setup():
     prop.variable_pitch          = True
     
     # Custom hacky prop stuff.  Exists as a function, but I couldn't get it to load the normal way
-    prop_table_path = "C:\Aero\KingAir\KA200_prop_table.csv"
+    prop_table_path = "C:\Git-Local\SUAVE\SUAVE_develop\KingAir\KA200_prop_table.csv"
     #Convert the path string to an OS path
     
     os_path = Path(prop_table_path)
