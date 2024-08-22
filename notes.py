@@ -8,6 +8,7 @@ Created on Thu Aug 22, 2024
 
 Handoff notes:
     
+Branch is Feat_KA200
 KA main working mission file is tut_mission_KA200.py
 Have tried to get the Payload-Range mission working, but haven't spent a lot of time on it.
 Intent is to use OEM KA B200 configuration for baseline to verify tool accuracy
@@ -22,5 +23,6 @@ To do's:
     -Update KA200 physical parameters and document sources.  Most are from random internet sources or the POH and should be verified
     -Figure out why constant CAS climb segment oscillates
     -Validate results are accurate / appropriate
+    -A better model of the PT6 would be nice
     -Create / integrate model for H570 powertrain
     -Create missions per CDR for comparison of baseline vs H570 KA
