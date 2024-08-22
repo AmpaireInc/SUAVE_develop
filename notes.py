@@ -21,7 +21,7 @@ Differences from standard SUAVE:
     
 To do's:
     -Update KA200 physical parameters and document sources.  Most are from random internet sources or the POH and should be verified
-    -Figure out why constant CAS climb segment oscillates
+    -Figure out why constant CAS climb segment oscillates.  I suspect it's because the guesses are the same across a segment that changes
     -Validate results are accurate / appropriate
     -A better model of the PT6 would be nice
     -Create / integrate model for H570 powertrain
