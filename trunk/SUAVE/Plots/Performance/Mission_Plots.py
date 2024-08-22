@@ -121,7 +121,7 @@ def plot_aircraft_velocities(results, line_color = 'bo-', save_figure = False, s
         MSL_data = segment.analyses.atmosphere.compute_values(.0,.0)
         alpha_sl = MSL_data.speed_of_sound[0]
         pressure_sl = MSL_data.pressure[0]
-        CAS      = (alpha_sl*np.sqrt(5*((((.5*density*velocity**2)/pressure_sl)+1)**(2/7)-1)))
+        CAS      = alpha_sl*np.sqrt(5*(((((.5*density*velocity**2)/pressure_sl)+1)**(2/7))-1))
 
         axes = plt.subplot(4,1,1)
         axes.plot( time , velocity / Units.kts, line_color)
@@ -1052,7 +1052,7 @@ def plot_propulsion_conditions(results, line_color = 'bo-', save_figure = False,
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
         rpm    = segment.conditions.propulsion.propeller_rpm[:,0] 
         thrust = np.linalg.norm(segment.conditions.frames.body.thrust_force_vector[:,:],axis=1) / Units.lbf
-        torque = segment.conditions.propulsion.propeller_torque[:,0] 
+        torque = segment.conditions.propulsion.propeller_torque[:,0] / Units['ft*lbf']
         tm     = segment.conditions.propulsion.propeller_tip_mach[:,0]
         #Cp     = segment.conditions.propulsion.propeller_power_coefficient[:,0]
         eta    = segment.conditions.propulsion.throttle[:,0]
@@ -1072,7 +1072,7 @@ def plot_propulsion_conditions(results, line_color = 'bo-', save_figure = False,
         axes = plt.subplot(2,3,3)
         axes.plot(time, torque, line_color )
         axes.set_xlabel('Time (mins)',axis_font)
-        axes.set_ylabel('Torque (N-m)',axis_font)
+        axes.set_ylabel('Torque (ft-lb)',axis_font)
         set_axes(axes)  
         
         axes = plt.subplot(2,3,4)

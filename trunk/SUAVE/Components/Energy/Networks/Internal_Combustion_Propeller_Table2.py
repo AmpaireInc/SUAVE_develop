@@ -110,6 +110,9 @@ class Internal_Combustion_Propeller_Table2(Network):
             # Throttle the engine
             engine.inputs.speed                              = state.conditions.propulsion.rpm * Units.rpm
             conditions.propulsion.combustion_engine_throttle = conditions.propulsion.throttle
+            for value in conditions.propulsion.throttle:
+                if value > 1.:
+                    print("Throttle is set to ", value[0]*100., "%. Results likely invalid for segment.")
             
             
             # Run the engine

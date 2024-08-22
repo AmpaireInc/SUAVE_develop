@@ -58,7 +58,7 @@ def drag_polar(state,settings,geometry):
     
     #Calculate Thrust Drag Coefficient
     TC_drag = thrust / (.5 * rho * velocity**2 * wing_area)
-    print(TC_drag[0,0])
+    #print(TC_drag[0,0])
 
     drag_coefficient_increment = configuration.drag_coefficient_increment
     drag_polar_drag        = calculate_from_polar(polar_main, polar_sub, CL, TC_drag)
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     CL = .5 #* size_array
     polar_main = drag_polar.climb
     polar_sub = drag_polar.climb.two
-    TC = .11 #* size_array
+    TC = .09 #* size_array
 
     CD = calculate_from_polar(polar_main, polar_sub, CL, TC)
     print(CL**2, CD)

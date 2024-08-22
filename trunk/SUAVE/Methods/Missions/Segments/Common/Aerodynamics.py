@@ -131,6 +131,8 @@ def update_freestream(segment):
     Vmag2 = np.sum( Vvec**2, axis=1)[:,None] # keep 2d column vector
     Vmag  = np.sqrt(Vmag2)
 
+    #print("Vvec: ", Vvec)  #debug
+
     # dynamic pressure
     q = 0.5 * rho * Vmag2 # Pa
 
